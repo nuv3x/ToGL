@@ -11,7 +11,6 @@ $Macro OUTBINNAME	"togl"
 $Macro TOGL_SRCDIR	"$SRCDIR/togl/linuxwin" 
 $Macro TOGL_INCDIR	"$SRCDIR/public/togl/linuxwin"
 
-
 $include "$SRCDIR\vpc_scripts\source_dll_base.vpc"
 
 // Common Configuration
@@ -22,7 +21,7 @@ $Configuration
 		$AdditionalIncludeDirectories  	"$BASE;..\"
 		$PreprocessorDefinitions	"$BASE;TOGL_DLL_EXPORT;PROTECTED_THINGS_ENABLE;strncpy=use_Q_strncpy_instead;_snprintf=use_Q_snprintf_instead" [!$OSXALL]
 		$PreprocessorDefinitions	"$BASE;TOGL_DLL_EXPORT" [$OSXALL]
-
+		$PreprocessorDefinitions	"$BASE;GL" [$SOURCESDK && !$GL]
 	}
     
 	$Linker
@@ -41,7 +40,7 @@ $Configuration
 		$GameOutputFile                                 "$OUTBINDIR/$_IMPLIB_PREFIX$OUTBINNAME$_DLL_EXT"
 	}
 
-	$PreLinkEvent [$WINDOWS]
+	$PreLinkEvent [$WINDOWS && !$SOURCESDK]
 	{
 		$CommandLine	"call $SRCDIR\vpc_scripts\valve_p4_edit.cmd $LIBPUBLIC\$(TargetName).lib $SRCDIR" "\n" \
 						"$BASE"
